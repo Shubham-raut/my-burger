@@ -4,7 +4,10 @@ class Ingredients extends Component {
     render() {
         return (
             <div>
-                {this.props.name}
+                <span>{this.props.name}</span>
+                <button onClick={this.props.add}>+</button>
+                <button onClick={this.props.remove}>-</button>
+                <span>{this.props.value}</span>
             </div>
         )
     }
