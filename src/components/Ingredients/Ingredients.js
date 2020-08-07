@@ -5,8 +5,8 @@ class Ingredients extends Component {
         return (
             <div>
                 <span>{this.props.name}</span>
-                <button onClick={this.props.add}>+</button>
-                <button onClick={this.props.remove}>-</button>
+                <button onClick={() => this.props.add(this.props.name)}>+</button>
+                <button onClick={() => this.props.remove(this.props.name)}>-</button>
                 <span>{this.props.value}</span>
             </div>
         )

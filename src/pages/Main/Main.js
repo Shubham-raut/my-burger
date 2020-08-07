@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Main.css';
 
 import Ingredients from './../../components/Ingredients/Ingredients';
+import Modal from './../../common/Modal/Modal';
+import { camelize } from './../../utility';
 
 class Main extends Component {
     state = {
@@ -10,86 +12,57 @@ class Main extends Component {
             meat: 0,
             patty: 0,
             salad: 0
+        },
+        showOrder: false
+    }
+
+    // for adding ingredients
+    addHandler = (ingredient) => {
+        let changedIngredient = ingredient.toLowerCase();
+        let newIngredients = this.state.ingredients;
+        newIngredients[changedIngredient] = newIngredients[changedIngredient] + 1;
+        this.setState({
+            ingredients: newIngredients
+        })
+    }
+    // for removing ingredients
+    removeHandler = (ingredient) => {
+        let changedIngredient = ingredient.toLowerCase();
+        let newIngredients = this.state.ingredients;
+        if (this.state.ingredients[changedIngredient] !== 0) {
+            newIngredients[changedIngredient] = newIngredients[changedIngredient] - 1;
+            this.setState({
+                ingredients: newIngredients
+            })
         }
     }
 
-    addCheeseHandler = () => {
+    // event handlor for order now
+    orderClickHandler = () => {
         this.setState({
-            ingredients: {
-                ...this.state.ingredients,
-                cheese: this.state.ingredients.cheese + 1
-            }
+            showOrder: true
         })
-    }
-
-    addMeatHandler = () => {
-        this.setState({
-            ingredients: {
-                ...this.state.ingredients,
-                meat: this.state.ingredients.meat + 1
-            }
-        })
-    }
-
-    addpattyHandler = () => {
-        this.setState({
-            ingredients: {
-                ...this.state.ingredients,
-                patty: this.state.ingredients.patty + 1
-            }
-        })
-    }
-
-    addSaladHandler = () => {
-        this.setState({
-            ingredients: {
-                ...this.state.ingredients,
-                salad: this.state.ingredients.salad + 1
-            }
-        })
-    }
-
-    removeCheeseHandler = () => {
-        this.state.ingredients.cheese !== 0 &&
-            this.setState({
-                ingredients: {
-                    ...this.state.ingredients,
-                    cheese: this.state.ingredients.cheese - 1
-                }
-            })
-    }
-
-    removeMeatHandler = () => {
-        this.state.ingredients.meat !== 0 &&
-            this.setState({
-                ingredients: {
-                    ...this.state.ingredients,
-                    meat: this.state.ingredients.meat - 1
-                }
-            })
-    }
-
-    removepattyHandler = () => {
-        this.state.ingredients.patty !== 0 &&
-            this.setState({
-                ingredients: {
-                    ...this.state.ingredients,
-                    patty: this.state.ingredients.patty - 1
-                }
-            })
-    }
-
-    removeSaladHandler = () => {
-        this.state.ingredients.salad !== 0 &&
-            this.setState({
-                ingredients: {
-                    ...this.state.ingredients,
-                    salad: this.state.ingredients.salad - 1
-                }
-            })
     }
 
     render() {
+        let ingredientsName = Object.keys(this.state.ingredients);
+        let ingredients = ingredientsName.map(ingredient => {
+            return (
+                <Ingredients
+                    name={camelize(ingredient)}
+                    add={this.addHandler}
+                    remove={this.removeHandler}
+                    key={ingredient}
+                    value={this.state.ingredients[ingredient]} />
+            )
+        })
+        let order = ingredientsName.map(ingredient => {
+            return (
+                <p key={ingredient}>{camelize(ingredient)} : {this.state.ingredients[ingredient]}</p>
+            )
+        })
+        let orders = <div>{order}</div>
+
         return (
             <div>
                 <div className='NavHeader'>
@@ -99,14 +72,18 @@ class Main extends Component {
                     My burger will be shown here
                 </div>
                 <div className='IngredientsContainer'>
-                    <Ingredients name='Cheese' value={this.state.ingredients.cheese} add={this.addCheeseHandler} remove={this.removeCheeseHandler} />
-                    <Ingredients name='Meat' value={this.state.ingredients.meat} add={this.addMeatHandler} remove={this.removeMeatHandler} />
-                    <Ingredients name='Patty' value={this.state.ingredients.patty} add={this.addpattyHandler} remove={this.removepattyHandler} />
-                    <Ingredients name='Salad' value={this.state.ingredients.salad} add={this.addSaladHandler} remove={this.removeSaladHandler} />
+                    {ingredients}
                 </div>
                 <div className='Footer'>
-                    <button>Order Now</button>
+                    <button onClick={this.orderClickHandler}>Order Now</button>
                 </div>
+                {
+                    this.state.showOrder ?
+                        <Modal
+                            title='Your Order'
+                            content={orders} /> :
+                        null
+                }
             </div>
         )
     }
