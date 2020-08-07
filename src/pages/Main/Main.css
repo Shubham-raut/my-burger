@@ -1,0 +1,32 @@
+.NavHeader {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    background-color: #9a573d;
+    color: #ddd;
+}
+
+.BurgerBody {
+    height: 300px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.IngredientsContainer {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    background-color: #4ecc4e;
+    color: #fff;
+}
+
+.Footer {
+    padding: 10px 0;
+}
+
+.Footer button {
+    height: 30px;
+    cursor: pointer;
+    background-color: #fff !important;
+    border-radius: 5px;
+}
