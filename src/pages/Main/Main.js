@@ -58,6 +58,7 @@ class Main extends Component {
     render() {
         let orders = null;
         let ingredients = null;
+        let body = null;
 
         if (this.state.ingredients !== null) {
             let ingredientsName = Object.keys(this.state.ingredients);
@@ -77,7 +78,15 @@ class Main extends Component {
                 )
             })
             orders = <div>{order}</div>
+
+            const keys = Object.keys(this.state.ingredients);
+            body = keys.map((key) => {
+                if (this.state.ingredients[key]) {
+                    return <div className='burgerIngredient'>{key}- {this.state.ingredients[key]}</div>
+                }
+            })
         }
+
 
         return (
             <div>
@@ -85,7 +94,10 @@ class Main extends Component {
                     Build My Burger
                 </div>
                 <div className='BurgerBody'>
-                    My burger will be shown here
+                    {/* My burger will be shown here */}
+                    <div className='burgerIngredient'>Bread</div>
+                    {body}
+                    <div className='burgerIngredient'>Bread</div>
                 </div>
                 <div className='IngredientsContainer'>
                     {ingredients}

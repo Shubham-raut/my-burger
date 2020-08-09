@@ -9,8 +9,9 @@
     height: 300px;
     border-bottom: 1px solid #eee;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .IngredientsContainer {
@@ -29,4 +30,11 @@
     cursor: pointer;
     background-color: #fff !important;
     border-radius: 5px;
+}
+
+.burgerIngredient {
+    border: 1px solid #9a573d;
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
 }
