@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
 class Ingredients extends Component {
     render() {
@@ -14,3 +15,8 @@ class Ingredients extends Component {
 }
 
 export default Ingredients;
+
+Ingredients.propTypes = {
+    name: propTypes.string,
+    value: propTypes.number
+}
