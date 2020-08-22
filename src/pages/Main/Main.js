@@ -5,22 +5,23 @@ import Ingredients from './../../components/Ingredients/Ingredients';
 import Modal from './../../common/Modal/Modal';
 import { camelize } from './../../utility';
 import Axios from 'axios';
+import Orders from '../../components/Orders/Orders';
 
 class Main extends Component {
     state = {
         ingredients: null,
         showOrder: false,
-        orderStatus: ''
     }
 
     componentDidMount() {
-        Axios.get('https://buildmyburger-f1671.firebaseio.com/ingredients.json')
+        Axios
+            .get('https://buildmyburger-f1671.firebaseio.com/ingredients.json')
             .then(response => {
                 this.setState({
                     ingredients: response.data
                 })
             })
-            .catch(error => { console.log(error) });
+            .catch(error => { alert(error.message) });
     }
 
     // for adding ingredients
@@ -51,14 +52,25 @@ class Main extends Component {
             this.setState({ showOrder: true }) :
             alert('Please add some ingredients before ordering!!!');
     }
-    atBurger = () => {
-        this.setState({ showOrder: false })
+
+    cancelOrderHandlor = () => {
+        this.setState({
+            showOrder: false
+        })
+        alert('Your order has been cancelled!');
+    }
+
+    placeOrderHandlor = () => {
+        this.setState({
+            showOrder: false
+        })
+        alert('Your order is successfully placed!');
     }
 
     render() {
         let orders = null;
         let ingredients = null;
-        let body = null;
+        let burgerIngredients = null;
 
         if (this.state.ingredients !== null) {
             let ingredientsName = Object.keys(this.state.ingredients);
@@ -72,19 +84,16 @@ class Main extends Component {
                         value={this.state.ingredients[ingredient]} />
                 )
             })
-            let order = ingredientsName.map(ingredient => {
-                return (
-                    <p key={ingredient}>{camelize(ingredient)} : {this.state.ingredients[ingredient]}</p>
-                )
-            })
-            orders = <div>{order}</div>
 
-            const keys = Object.keys(this.state.ingredients);
-            body = keys.map((key) => {
+            let order = <Orders ingredients={this.state.ingredients} ingredientsName={ingredientsName} placeOrder={this.placeOrderHandlor} cancelOrder={this.cancelOrderHandlor} />
+
+            burgerIngredients = ingredientsName.map(key => {
                 if (this.state.ingredients[key]) {
-                    return <div className='burgerIngredient'>{key}- {this.state.ingredients[key]}</div>
+                    return (<div key={key} className='burgerIngredient'>{key}- {this.state.ingredients[key]}</div>)
                 }
             })
+
+            orders = <div>{order}</div>;
         }
 
 
@@ -96,7 +105,7 @@ class Main extends Component {
                 <div className='BurgerBody'>
                     {/* My burger will be shown here */}
                     <div className='burgerIngredient'>Bread</div>
-                    {body}
+                    {burgerIngredients}
                     <div className='burgerIngredient'>Bread</div>
                 </div>
                 <div className='IngredientsContainer'>
@@ -109,8 +118,7 @@ class Main extends Component {
                     this.state.showOrder ?
                         <Modal
                             title='Your Order'
-                            content={orders}
-                            backToBurger={this.atBurger} /> :
+                            content={orders} /> :
                         null
                 }
 

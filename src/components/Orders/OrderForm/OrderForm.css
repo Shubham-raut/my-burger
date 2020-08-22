@@ -1,0 +1,11 @@
+.InputElement {
+    margin: 10px 0;
+    width: 300px;
+}
+
+.OrderForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
